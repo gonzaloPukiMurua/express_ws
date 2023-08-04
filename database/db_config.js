@@ -1,8 +1,8 @@
 module.exports = {
     config : {
-        server: "DESKTOP-MPIKJC5", // or "localhost"
-        user: process.env.DB_USER || 'newuser',
-        password: process.env.DB_PWD || 'password-test',
+        server: "DESKTOP-FG1T05V", // or "localhost"
+        user: process.env.DB_USER || 'test_user',
+        password: process.env.DB_PWD || 'JhonnyJoestar89',
         database: process.env.DB_NAME || 'example_database',
         pool: {
             max: 10,
