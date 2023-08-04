@@ -23,27 +23,31 @@ router.post('/carga_masiva', async (req,res) => {
         for(let i = 0; i < tables.length; i++){            
             const table = tables[i]
             const tableRecords = reader.utils.sheet_to_json(file.Sheets[table], {header: 1});
-            const header = tableRecords.shift().toString();            
+            const header = tableRecords.shift();            
             console.log(`Esta tabla es: ${table}`);
             console.log(`Sus columnas son: ${header}`);
             console.log(`Hay ${tableRecords.length} registros en esta tabla.`);
-            tableRecords.forEach(record => {
-                const queryValues = [];
+            for(let k = 0; k < tableRecords.length; k++){
+                record = tableRecords[k];
+                let queryValues = [];
+                //console.log('Cantidad de columnas: ', header.length, header);
+                //console.log(record);
                 for(let j=0; j < header.length; j++){
-                    console.log(record[j]);                    
+                    if(record[j] === undefined){
+                        record[j]='';
+                    }              
                     if(typeof record[j] === "string"){                       
                         queryValues.push("\'" + record[j] + "\'");                        
                     }else{
                         queryValues.push(record[j]);
                     }
                 }
-            })               
-            console.log(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);
-            //const pool = await poolPromise;
-            //await pool.query(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);                        
+                console.log(`INSERT INTO ${table} (${header.toString()}) VALUES (${queryValues});`);
+                const pool = await poolPromise;
+                await pool.query(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);
+            }                      
         }        
-        res.redirect('/api/records');
-        
+        res.redirect('/api/records');        
     }catch(error){
         console.log('Error en esta carga masiva mi rey');
         console.log(error);
