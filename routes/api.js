@@ -27,20 +27,20 @@ router.post('/carga_masiva', async (req,res) => {
             console.log(`Esta tabla es: ${table}`);
             console.log(`Sus columnas son: ${header}`);
             console.log(`Hay ${tableRecords.length} registros en esta tabla.`);
-            for(let j=0; j < tableRecords.length; j++){
+            tableRecords.forEach(record => {
                 const queryValues = [];
-                tableRecords[j].forEach(record => {
-                    console.log(record);                    
-                    if(typeof record === "string"){                       
-                        queryValues.push("\'" + record + "\'");                        
+                for(let j=0; j < header.length; j++){
+                    console.log(record[j]);                    
+                    if(typeof record[j] === "string"){                       
+                        queryValues.push("\'" + record[j] + "\'");                        
                     }else{
-                        queryValues.push(record);
-                    }                    
-                });
-                console.log(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);
-                const pool = await poolPromise;
-                await pool.query(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);
-            }            
+                        queryValues.push(record[j]);
+                    }
+                }
+            })               
+            console.log(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);
+            //const pool = await poolPromise;
+            //await pool.query(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);                        
         }        
         res.redirect('/api/records');
         
