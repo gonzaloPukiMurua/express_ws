@@ -1,6 +1,7 @@
 const express = require('express');
+const reader = require('xlsx');
 const router = express.Router();
-const {sheets}= require('../controllers/xslx_reader');
+const {file}= require('../controllers/xslx_reader');
 const {querys} = require('../controllers/querys');
 const {poolPromise} = require('../database/db');
 
@@ -18,7 +19,30 @@ router.get('/carga_masiva', (req, res) =>{
 
 router.post('/carga_masiva', async (req,res) => {
     try{
-        const pool = await poolPromise;
+        const tables = file.SheetNames;
+        for(let i = 0; i < tables.length; i++){            
+            const table = tables[i]
+            const tableRecords = reader.utils.sheet_to_json(file.Sheets[table], {header: 1});
+            const header = tableRecords.shift().toString();            
+            console.log(`Esta tabla es: ${table}`);
+            console.log(`Sus columnas son: ${header}`);
+            console.log(`Hay ${tableRecords.length} registros en esta tabla.`);
+            for(let j=0; j < tableRecords.length; j++){
+                const queryValues = [];
+                tableRecords[j].forEach(record => {
+                    console.log(record);                    
+                    if(typeof record === "string"){                       
+                        queryValues.push("\'" + record + "\'");                        
+                    }else{
+                        queryValues.push(record);
+                    }                    
+                });
+                console.log(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);
+                const pool = await poolPromise;
+                await pool.query(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);
+            }            
+        }        
+        res.redirect('/api/records');
         
     }catch(error){
         console.log('Error en esta carga masiva mi rey');
