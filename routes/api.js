@@ -47,7 +47,7 @@ router.post('/carga_masiva', async (req,res) => {
                 await pool.query(`INSERT INTO ${table} (${header}) VALUES (${queryValues});`);
             }                      
         }        
-        res.redirect('/api/records');        
+        res.redirect('/api/tables');        
     }catch(error){
         console.log('Error en esta carga masiva mi rey');
         console.log(error);
@@ -78,14 +78,14 @@ router.get('/tables', async (req,res) => {
         const userTables = result.recordset.filter(record => record.name != 'sysdiagrams');
         const tablesNames = [];
         userTables.forEach((record) => {
-            tablesNames.push(record.name);
+            tablesNames.push({'name' : record.name});
         })
         console.log(tablesNames); 
         if(!affectedRows[0]){
             console.log('There are not tables');
             res.send('No tables');            
         }else{            
-            res.json({tablesNames});
+            res.render('tablas',{tablesNames});
         }
     } catch (error) {
         console.log('Error en este controlador mi rey')

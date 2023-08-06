@@ -1,0 +1,22 @@
+<div class="container p-4">
+    <div class="row">
+        {{#each tablesNames}}
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">                   
+                    <a href='records/{{name}}' class="card-title text-uppercase">
+                        {{name}}
+                    </a> 
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+                <p>No hay sorteos</p>
+                <a href="/api/carga">Carga bolillas</a> <!--Borrar--> 
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
