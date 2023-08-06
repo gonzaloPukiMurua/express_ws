@@ -21,7 +21,7 @@ router.post('/carga_masiva', async (req,res) => {
     try{
         const tables = file.SheetNames;
         for(let i = 0; i < tables.length; i++){            
-            const table = tables[i]
+            const table = tables[i];
             const tableRecords = reader.utils.sheet_to_json(file.Sheets[table], {header: 1});
             const header = tableRecords.shift();            
             console.log(`Esta tabla es: ${table}`);
@@ -54,10 +54,11 @@ router.post('/carga_masiva', async (req,res) => {
     };
 });
 
-router.get('/records', async (req, res) => {
+router.get('/records/:table', async (req, res) => {
+    const table = req.params.table;
     try{
         const pool = await poolPromise;
-        const result = await pool.request().query(querys.getAllRecords);
+        const result = await pool.request().query(`SELECT TOP(500) * FROM [dbo].[${table}]`);
         console.log(result);
         res.json(result.recordset);
     }catch(error){
