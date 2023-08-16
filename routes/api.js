@@ -13,6 +13,10 @@ router.get('/carga', (req, res) =>{
     res.render('carga');
 });
 
+router.post('/carga', (req, res) =>{
+    res.render('carga');
+});
+
 router.get('/carga_masiva', (req, res) =>{
     res.render('carga_masiva');
 });
@@ -54,18 +58,6 @@ router.post('/carga_masiva', async (req,res) => {
     };
 });
 
-router.get('/records/:table', async (req, res) => {
-    const table = req.params.table;
-    try{
-        const pool = await poolPromise;
-        const result = await pool.request().query(`SELECT TOP(500) * FROM [dbo].[${table}]`);
-        console.log(result);
-        res.json(result.recordset);
-    }catch(error){
-        console.log('Error en este controlador mi rey');
-        console.log(error.message);
-    };
-});
 
 router.get('/tables', async (req,res) => {
     console.log('En api/tables')
@@ -92,6 +84,28 @@ router.get('/tables', async (req,res) => {
         console.log(error.message);
     }
   });
+
+router.get('/records/:table', async (req, res) => {
+    const table = req.params.table;
+    try{
+        const pool = await poolPromise;
+        const columnNames = await pool.request().query(`
+        SELECT COLUMN_NAME
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_NAME = '${table}'`);
+        const result = await pool.request().query(`SELECT TOP(500) * FROM [dbo].[${table}]`);
+        const {recordset : header} = columnNames;
+        console.log(header);
+        
+        //console.log(result);
+        //res.json(header);
+        res.json(result);
+    }catch(error){
+        console.log('Error en este controlador mi rey');
+        console.log(error.message);
+    };
+});
+
 
 router.ws('/echo', (ws, res) => {
     

@@ -20,6 +20,7 @@
     "handlebars": "^4.7.8",
     "http": "^0.0.1-security",
     "mssql": "^9.1.2",
+    "socket.io": "^4.7.2",
     "websocket": "^1.0.34",
     "ws": "^8.13.0",
     "xlsx": "^0.18.5"

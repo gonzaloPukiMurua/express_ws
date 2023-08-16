@@ -26,6 +26,6 @@ app.use(express.static(path.resolve(__dirname, 'views')));
 
 app.use('/api',require(path.resolve(__dirname,'routes/api')));
 
-app.listen(app.get('port'), () => {
+app.listen(app.get('port'), '192.168.0.102',() => {
     console.log(`Server is in port ${app.get('port')}`);
 });
