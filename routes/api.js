@@ -5,7 +5,14 @@ const {file}= require('../controllers/xslx_reader');
 const {querys} = require('../controllers/querys');
 const {poolPromise} = require('../database/db');
 
+router.get('/control', (req, res) => {
+    const io = req.app.get('socketio');
+    io.to('').emit("message", data);
+    res.render('control');
+  });
+
 router.get('/sorteo', (req, res) =>{
+    
     res.render('sorteo');
 });
 
@@ -13,8 +20,12 @@ router.get('/carga', (req, res) =>{
     res.render('carga');
 });
 
-router.post('/carga', (req, res) =>{
-    res.render('carga');
+router.get('/resultados', async (req, res) => {
+    socket.on('id', (msg) => {
+        idResultado = msg;
+        console.log('Usuario de "Resultados": ', idResultado);
+      });
+    res.render('resultados');
 });
 
 router.get('/carga_masiva', (req, res) =>{
@@ -58,7 +69,6 @@ router.post('/carga_masiva', async (req,res) => {
     };
 });
 
-
 router.get('/tables', async (req,res) => {
     console.log('En api/tables')
     try {
@@ -85,50 +95,6 @@ router.get('/tables', async (req,res) => {
     }
   });
 
-router.get('/records/:table', async (req, res) => {
-    const table = req.params.table;
-    try{
-        const pool = await poolPromise;
-        const columnNames = await pool.request().query(`
-        SELECT COLUMN_NAME
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = '${table}'`);
-        const result = await pool.request().query(`SELECT TOP(500) * FROM [dbo].[${table}]`);
-        const {recordset : header} = columnNames;
-        console.log(header);
-        
-        //console.log(result);
-        //res.json(header);
-        res.json(result);
-    }catch(error){
-        console.log('Error en este controlador mi rey');
-        console.log(error.message);
-    };
-});
 
-
-router.ws('/echo', (ws, res) => {
-    
-    ws.on('message', msg => {
-        console.log('Mensaje recibido: ', msg);
-        ws.send(msg);
-    })
-
-    ws.on('close', () => {
-        console.log('WebSocket was closed')
-    })
-});
-
-router.ws('/other', (ws, res) => {
-    
-    ws.on('message', msg => {
-        console.log('Mensaje recibido: ', msg);
-        ws.send(msg);
-    })
-
-    ws.on('close', () => {
-        console.log('WebSocket was closed')
-    })
-}); 
 
 module.exports = router;

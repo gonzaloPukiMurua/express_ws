@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <button type="submit" class="btn btn-succes btn-block" id="anterior">
+                                Anterior
+                    </button>
+                    <button type="submit" class="btn btn-succes btn-block" id="siguiente">
+                                Siguiente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+    const socket = io();
+    const anterior = document.getElementById('anterior');
+    const siguiente = document.getElementById('siguiente');
+    siguiente.addEventListener('click', (e) => {
+        e.preventDefault();
+        socket.emit('siguiente', 'siguiente');
+    });
+    const siguiente = document.getElementById('siguiente');
+    anterior.addEventListener('click', (e) => {
+        e.preventDefault();
+        socket.emit('anterior', 'anterior');
+    });
+</script>
