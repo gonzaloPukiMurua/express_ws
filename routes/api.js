@@ -4,10 +4,23 @@ const router = express.Router();
 const {file}= require('../controllers/xslx_reader');
 const {querys} = require('../controllers/querys');
 const {poolPromise} = require('../database/db');
-
 router.get('/control', (req, res) => {
-    const io = req.app.get('socketio');
-    io.to('').emit("message", data);
+    /*const io = req.app.get('socketio');
+    //io.to('').emit("message", data);
+    io.on('id', (msg) => {
+        idResultado = msg;
+        console.log('Usuario de "Resultados": ', idResultado);
+      });
+      socket.on('siguiente', (msg) => {
+    console.log('message: ' + msg);
+    if(msg === 'siguiente'){
+      indiceSorteo += 1;
+      console.log('Valor de indice de listado de sorteo: ', indiceSorteo);
+      console.log('Enviando a: ', idResultado);
+      socket.to(idResultado).emit('next', indiceSorteo);
+    }
+  });
+  */
     res.render('control');
   });
 
@@ -21,7 +34,8 @@ router.get('/carga', (req, res) =>{
 });
 
 router.get('/resultados', async (req, res) => {
-    socket.on('id', (msg) => {
+    const io = req.app.get('io');
+    io.on('id', (msg) => {
         idResultado = msg;
         console.log('Usuario de "Resultados": ', idResultado);
       });
@@ -94,7 +108,18 @@ router.get('/tables', async (req,res) => {
         console.log(error.message);
     }
   });
-
+  router.get('/records/:table', async (req, res) => {
+    const table = req.params.table;
+    try{
+        const pool = await poolPromise;
+        const result = await pool.request().query(`SELECT TOP(500) * FROM [dbo].[${table}]`);
+        console.log(result);
+        res.json(result.recordset);
+    }catch(error){
+        console.log('Error en este controlador mi rey');
+        console.log(error.message);
+    };
+});
 
 
 module.exports = router;

@@ -21,11 +21,12 @@
     const siguiente = document.getElementById('siguiente');
     siguiente.addEventListener('click', (e) => {
         e.preventDefault();
-        socket.emit('siguiente', 'siguiente');
+        console.log('Buscar siguiente resultado.')
+        socket.emit('control', 'siguiente');
     });
-    const siguiente = document.getElementById('siguiente');
     anterior.addEventListener('click', (e) => {
         e.preventDefault();
-        socket.emit('anterior', 'anterior');
+        console.log('Buscar resultado anterior.')
+        socket.emit('control', 'anterior');
     });
 </script>

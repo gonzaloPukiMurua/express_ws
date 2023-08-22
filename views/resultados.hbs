@@ -3,8 +3,8 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="card-title" id="bolilla">1</h2>
-                    <h3 class="card-subtitle" id="orden">1</h3>
+                    <h2 class="card-title" id="bolilla">0</h2>
+                    <h3 class="card-subtitle" id="orden">0</h3>
                 </div>
             </div>
         </div>
@@ -13,15 +13,18 @@
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 <script>
   const socket = io();
-  const bolilla = document.getElementById('bolilla');
-  const orden = document.getElementById('orden');   
+  const bolillaSorteo = document.getElementById('bolilla');
+  const ordenSorteo = document.getElementById('orden');   
   socket.on("connect", () => {
-  socket.emit('id', socket.id); // "G5p5..."
+  socket.emit('id:resultados', socket.id); // "G5p5..."
   });
-  socket.on('next', (msg) => {
-    console.log('Recibido: ', msg);
-    bolilla.innerHTML = `${msg}`;
-    orden.innerHTML = `${msg}`;
+  socket.on('db:resultados', (resultados) => {
+    const {orden, bolilla} = resultados;
+    console.log('Recibido: ', orden, bolilla);
+    console.log(bolillaSorteo.innerText);
+    console.log(ordenSorteo.innerText);
+    bolillaSorteo.innerText = bolilla;
+    ordenSorteo.innerText = orden;
   });
   
 </script>
