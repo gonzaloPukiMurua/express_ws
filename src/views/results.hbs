@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title" id="bolilla">0</h2>
+                    <h3 class="card-subtitle">Pocision <span id="orden"></span></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Ganadores</h2>
+                    <h3 class="card-subtitle" id="grupo">0</h3>
+                    <ul>
+                        <li>Por sorteo: <span id="bolillaGanadora"></span></li>
+                        <li>Pocision: <span id="pocisionBolilla"></span></li>
+                        <li>Por licitacion base: <span id="licitacionGanadora"></span></li>
+                        <li>
+                            <p>Licitacion base: <span id="totalLicitaciones"></span> ofertas</p>
+                            
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Ganadores</h2>
+                    <h3 class="card-subtitle" id="grupo">0</h3>
+                    <ul>
+                        <li>Por sorteo: <span id="bolillaGanadora"></span></li>
+                        <li>Por licitacion base: <span id="licitacionGanadora"></span></li>                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#each scripts}}
+    <script src={{script}}></script>
+{{/each}}
+  

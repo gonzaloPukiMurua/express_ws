@@ -1,7 +1,9 @@
-const {poolPromise} = require('./database/db');
-let {indice_sorteo, indice_ganadores, indice_licitaciones} = require('./src/lib/db_index');
+import {poolPromise} from './src/database/db.js';
+//import {indice_sorteo, indice_ganadores, indice_licitaciones} from './src/utils/db_index.js';
+let indice_sorteo = 0;
 let idSocketResultados = '';
-module.exports = (io) => {
+
+export default (io) => {
     io.on('connection',(socket) => { 
         console.log('a user connected');
         socket.on('disconnect', () => {

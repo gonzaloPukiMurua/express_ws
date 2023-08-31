@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Orden de bolillas</h5>
+                    <button type="submit" class="btn btn-primary btn-block" id="fase-1">Fase 1</button>
+                    <button type="submit" class="btn btn-succes btn-block" id="reproducir">Reproducir</button>
+                    <button type="submit" class="btn btn-succes btn-block" id="pausar">Pausar</button>
+                    <button type="submit" class="btn btn-succes btn-block" id="reiniciar">Reiniciar</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ganadores</h5>
+                    <button type="submit" class="btn btn-primary btn-block" id="fase-2">Fase 2</button>
+                    <button type="submit" class="btn btn-succes btn-block" id="anterior">Anterior</button>
+                    <button type="submit" class="btn btn-succes btn-block" id="siguiente">Siguiente</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Resumen</h5>
+                    <button type="submit" class="btn btn-primary btn-block" id="fase-3">Fase 3</button>
+                    <button type="submit" class="btn btn-succes btn-block" id="reproducir">reproducir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{#each scripts}}
+    <script src={{script}}></script>
+{{/each}}
