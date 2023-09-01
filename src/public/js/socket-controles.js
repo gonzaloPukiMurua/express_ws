@@ -7,41 +7,41 @@ const pausar = document.getElementById('pausar');
 const reiniciar = document.getElementById('reiniciar'); 
 const anterior = document.getElementById('anterior');
 const siguiente = document.getElementById('siguiente');
-
+/*
 fase_1.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('Ir a Fase 1.');
-  socket.emit('control', 'fase_1');
+  socket.emit('conmutador', 'fase_1');
 });
 
 fase_2.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('Ir a Fase 2.');
-  socket.emit('control', 'fase_2');
+  socket.emit('conmutador', 'fase_2');
 });
 
 fase_3.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('Ir a Fase 3.');
-  socket.emit('control', 'fase_3');
+  socket.emit('conmutador', 'fase_3');
 });
-
+*/
 reproducir.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('Reproducir bolillas por orden.');
-  socket.emit('control', 'reproducir');
+  socket.emit('sorteo', 'reproducir');
 });
 
 pausar.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('Pausar visualizacion.');
-  socket.emit('control', 'pausar');
+  socket.emit('sorteo', 'pausar');
 });
 
 reiniciar.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('Reiniciar visualizacion.');
-  socket.emit('control', 'reiniciar');
+  socket.emit('sorteo', 'reiniciar');
 });
 
 siguiente.addEventListener('click', (e) => {

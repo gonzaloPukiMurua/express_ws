@@ -1,4 +1,16 @@
-export const getControls = (req, res) => {
-    const scripts = [{script:'https://cdn.socket.io/4.5.4/socket.io.min.js'}, {script:'/js/socket-controles.js'}];
-    res.render('control', {scripts: scripts});
+import { poolPromise } from "../database/db";
+
+export const raffleController = async (index) => {
+    const pool = await poolPromise;
+    const resultados = await pool.query(`SELECT AuxGrafBolillaNumero, AuxGrafBolillaPosicion FROM [dbo].[AuxGrafBolillas] where AuxGrafBolillaNumero = ${index}`);
+    const {AuxGrafBolillaNumero : orden, AuxGrafBolillaPosicion : bolilla} = resultados.recordset[0];
+    return {orden, bolilla};
+};
+
+export const winnersController = () => {
+
+};
+
+export const resumeController = () => {
+
 };
