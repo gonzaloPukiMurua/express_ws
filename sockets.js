@@ -1,16 +1,31 @@
-import {poolPromise} from './src/database/db.js';
 import { TimerFunction } from './src/lib/timer.js';
+import { raffleController } from './src/controllers/socket.controllers.js';
+import events from 'events';
+
 let idSocketResultados = '';
 let raffleIndex = 0;
-let timer;
-//timer = new TimerFunction(console.log('Se a acabado el tiempo.'), 2000);
-export default (io) => {
 
+export default (io) => {
+    
     io.on('connection',(socket) => { 
         console.log('a user connected');
         socket.on('disconnect', () => {
           console.log('User disconnected.')
         });
+
+        const timerEvents = new events.EventEmitter();
+        let timer;
+        timerEvents.on('startTimer', () => {
+            timer = setInterval(async () => {
+                raffleIndex += 1;
+                const query = await raffleController(raffleIndex);  
+                console.log(query);
+                const {orden, bolilla} = query;              
+                console.log(`El timer se ha acabado. Orden: ${orden} | Bolilla: ${bolilla}`);
+                socket.to(idSocketResultados).emit('db:resultados', {orden, bolilla});
+            }, 5000);
+        });
+        timerEvents.on('pauseTimer', () => clearInterval(timer));
 
         socket.on('id:resultados', (id) => {
             idSocketResultados = id;
@@ -19,29 +34,37 @@ export default (io) => {
 
         socket.on('conmutador', async (phase)=>{ 
             console.log('Cambio de etapa.');
-
-            });
+            console.log(phase);
+            });    
 
         socket.on('sorteo', async (action) => {            
             switch (action){
-                case 'reproducir':                    
-                    //socket.to(idSocketResultados).emit('timeout', 'Se a acabado el tiempo!');
+                case 'reproducir':
+                    console.log(action);                    
+                    socket.to(idSocketResultados).emit('timer', 'Reproducir sorteo.');
+                    timerEvents.emit('startTimer');
                     break;
-                case 'pause':
-                    //timer.pause();
+                case 'pausar':
+                    console.log(action);                    
+                    socket.to(idSocketResultados).emit('timer', 'Pausar sorteo.');
+                    timerEvents.emit('pauseTimer');
                     break;
                 case 'reiniciar':
+                    break;
                     
-                default:    
+                default:  
+                    break;  
             }
-
         });
-
+        
         socket.on('control', async (action) => {
             switch (action){
                 case 'siguiente':
+                    break;
                 case 'anterior':
-                default:    
+                    break;
+                default:  
+                    break;  
             }
         });
             /*if(accion === 'siguiente'){

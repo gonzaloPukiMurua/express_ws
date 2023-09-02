@@ -14,7 +14,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const port = 3000;
 app.set('port', process.env.PORT || port);
-app.set('host', process.env.HOST || '192.168.0.240'); // <- Colocar IP local
+app.set('host', process.env.HOST || '192.168.0.141'); // <- Colocar IP local
 app.set("views", join(__dirname, "views"));
 
 const hbs = exphbs.create({

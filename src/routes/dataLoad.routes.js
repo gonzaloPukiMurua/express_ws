@@ -1,10 +1,11 @@
 import express from 'express';
+import queries from '../helpers/querys.js';
+import { poolPromise } from '../database/db.js';
 import {
     masiveLoad,
 
 } from '../controllers/dataLoad.controllers.js'
 const router = express.Router();
-
 
 router.get('/carga', (req, res) =>{
     res.render('carga');
@@ -21,7 +22,7 @@ router.get('/tables', async (req,res) => {
     try {
         
         const pool = await poolPromise;
-        const result = await pool.request().query(querys.getAllTables);
+        const result = await pool.request().query(queries.getAllTables);
         console.log(typeof result);
         const affectedRows = result.rowsAffected;
         const userTables = result.recordset.filter(record => record.name != 'sysdiagrams');

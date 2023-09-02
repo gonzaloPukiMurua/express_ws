@@ -26,6 +26,7 @@ fase_3.addEventListener('click', (e) => {
   socket.emit('conmutador', 'fase_3');
 });
 */
+
 reproducir.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('Reproducir bolillas por orden.');
