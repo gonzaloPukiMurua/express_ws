@@ -1,4 +1,4 @@
-import { TimerFunction } from './src/lib/timer.js';
+//import { TimerFunction } from './src/lib/timer.js';
 import { raffleController } from './src/controllers/socket.controllers.js';
 import events from 'events';
 
@@ -26,6 +26,11 @@ export default (io) => {
             }, 5000);
         });
         timerEvents.on('pauseTimer', () => clearInterval(timer));
+        timerEvents.on('resetTimer', async () => {
+            raffleIndex = 0;
+            await timerEvents.emit('startTimer');
+            await timerEvents.emit('pauseTimer');
+        });
 
         socket.on('id:resultados', (id) => {
             idSocketResultados = id;
@@ -50,6 +55,7 @@ export default (io) => {
                     timerEvents.emit('pauseTimer');
                     break;
                 case 'reiniciar':
+                    timerEvents.emit('resetTimer');
                     break;
                     
                 default:  
@@ -60,6 +66,7 @@ export default (io) => {
         socket.on('control', async (action) => {
             switch (action){
                 case 'siguiente':
+                    
                     break;
                 case 'anterior':
                     break;
